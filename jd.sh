@@ -137,7 +137,7 @@ function Git_PullShell {
   cd ${ShellDir}
   git fetch --all
   ExitStatusShell=$?
-  git reset --hard origin/v3
+  git reset --hard origin/A1
 }
 
 
@@ -414,7 +414,7 @@ function Add_Cron {
 ## 自定义脚本功能
 function ExtraShell() {
   ## 自动同步用户自定义的diy.sh
-  EnableExtraShellURL="https://gitee.com/highdimen/jd_shell/raw/v3/sample/diy.sh"
+  EnableExtraShellURL="https://gitee.com/highdimen/jd_shell/raw/A1/sample/diy.sh"
   if [[ ${EnableExtraShellUpdate} == true ]]; then
     wget -q $EnableExtraShellURL -O ${FileDiy}
     if [ $? -eq 0 ]; then
