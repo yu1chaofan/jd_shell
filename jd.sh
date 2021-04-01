@@ -742,6 +742,17 @@ function panelinit {
   fi
 }
 
+## 更新docker-entrypoint，docker专用
+function update_docker_entrypoint {
+    if [[ $ShellDir ]] && [[ $(cat $ShellDir/docker/docker-entrypoint.sh) != $(cat /usr/local/bin/docker-entrypoint.sh) ]]; then
+        cp -f $ShellDir/docker/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+        chmod 777 /usr/local/bin/docker-entrypoint.sh
+    fi
+}
+
+
+
+
 
 function UpdateFuntionall {
 ## 在日志中记录时间与路径
