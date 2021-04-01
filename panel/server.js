@@ -1,8 +1,8 @@
 /*
  * @Author: Jerrykuku https://github.com/jerrykuku
- * @Date: 2021-1-8
+ * @Date: 2021-4-1
  * @Version: v0.0.2
- * @thanks: FanchangWang https://github.com/FanchangWang
+ * @Modified: lan-tianxiang
  */
 
 var express = require('express');
@@ -27,7 +27,7 @@ var crontabFile = path.join(rootPath, 'config/crontab.list');
 // config.sh 文件备份目录
 var confBakDir = path.join(rootPath, 'config/bak/');
 // auth.json 文件目录
-var authConfigFile = path.join(rootPath, 'config/auth.json');
+var authConfigFile = path.join(rootPath, 'panel/auth.json');
 // diy.sh 文件目录
 var diyFile = path.join(rootPath, 'config/diy.sh');
 // 日志目录
