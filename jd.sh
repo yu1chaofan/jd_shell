@@ -278,10 +278,7 @@ function Notify_Version {
 
 ## npm install 子程序，判断是否为安卓，判断是否安装有yarn
 function Npm_InstallSub {
-  if [ -n "${isTermux}" ]
-  then
-    npm install --no-bin-links || npm install --no-bin-links --registry=https://registry.npm.taobao.org
-  elif ! type yarn >/dev/null 2>&1
+  if ! type yarn >/dev/null 2>&1
   then
     npm install || npm install --registry=https://registry.npm.taobao.org
   else
@@ -733,6 +730,7 @@ function Help {
   echo -e "6 bash ${HelpJd} resetpwd   # 重置控制面板用户名和密码"
   echo -e "7. bash ${HelpJd} shellon   # 开启shell面板"
   echo -e "8. bash ${HelpJd} shelloff  # 关闭shell面板"
+  echo -e "8. bash ${HelpJd} update  # 更新"
   cd ${ScriptsDir}
   for ((i=0; i<${#ListScripts[*]}; i++)); do
     Name=$(grep "new Env" ${ListScripts[i]} | awk -F "'|\"" '{print $2}')
