@@ -102,7 +102,7 @@ crontab ${JdDir}/config/crontab.list
 [ ! -s ${JdDir}/config/config.sh ] && cp -fv ${JdDir}/sample/config.sh.sample ${JdDir}/config/config.sh
 
 echo -e "\n3. 执行 git_pull.sh 进行脚本更新以及定时文件更新"
-bash ${JdDir}/git_pull.sh
+bash ${JdDir}/jd.sh update
 
 if [ ! -x "$(command -v pm2)" ]; then
     echo "正在安装pm2,集成并发功能"
