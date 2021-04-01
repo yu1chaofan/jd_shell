@@ -26,7 +26,7 @@ ContentVersion=${ShellDir}/version
 ContentNewTask=${ShellDir}/new_task
 ContentDropTask=${ShellDir}/drop_task
 
-panelpwd=${ConfigDir}/auth.json
+panelpwd=${ShellDir}/panel/auth.json
 panelpwdSample=${ShellDir}/sample/auth.json
 
 HelpJd=jd.sh
