@@ -3,7 +3,7 @@
 ## Author: lan-tianxiang
 ## Source: https://github.com/lan-tianxiang/jd_shell
 ## Modified： 2021-03-31
-## Version： v3.15.0
+## Version： v0.0.1
 
 ## 文件夹路径
 ShellDir=${JD_DIR:-$(cd $(dirname $0); pwd)}
@@ -739,7 +739,8 @@ function Help {
   echo -e "6 bash ${HelpJd} resetpwd   # 重置控制面板用户名和密码"
   echo -e "7. bash ${HelpJd} shellon   # 开启shell面板"
   echo -e "8. bash ${HelpJd} shelloff  # 关闭shell面板"
-  echo -e "8. bash ${HelpJd} update  # 更新"
+  echo -e "9. bash ${HelpJd} update  # 更新"
+  echo -e "10. bash ${HelpJd} clear  # 清理日记"
   cd ${ScriptsDir}
   for ((i=0; i<${#ListScripts[*]}; i++)); do
     Name=$(grep "new Env" ${ListScripts[i]} | awk -F "'|\"" '{print $2}')
@@ -1084,10 +1085,56 @@ LogFile="${LogDir}/export_sharecodes/export_sharecodes.log"
 Import_Conf && Count_UserSum && Cat_All | perl -pe "{s|京东种豆|种豆|; s|crazyJoy任务|疯狂的JOY|}" | tee ${LogFile}
 }
 
+## 4.==================================清理日记函数区==================================
+
+## 删除运行js脚本的旧日志
+function Rm_JsLog {
+  LogFileList=$(ls -l ${LogDir}/*/*.log | awk '{print $9}')
+  for log in ${LogFileList}
+  do
+    LogDate=$(echo ${log} | awk -F "/" '{print $NF}' | cut -c1-10)   #文件名比文件属性获得的日期要可靠
+    if [[ $(uname -s) == Darwin ]]
+    then
+      DiffTime=$(($(date +%s) - $(date -j -f "%Y-%m-%d" "${LogDate}" +%s)))
+    else
+      DiffTime=$(($(date +%s) - $(date +%s -d "${LogDate}")))
+    fi
+    [ ${DiffTime} -gt $((${RmLogDaysAgo} * 86400)) ] && rm -vf ${log}
+  done
+}
+
+## 删除git_pull.sh的运行日志
+function Rm_GitPullLog {
+  if [[ $(uname -s) == Darwin ]]
+  then
+    DateDelLog=$(date -v-${RmLogDaysAgo}d "+%Y-%m-%d")
+  else
+    Stmp=$(($(date "+%s") - 86400 * ${RmLogDaysAgo}))
+    DateDelLog=$(date -d "@${Stmp}" "+%Y-%m-%d")
+  fi
+  LineEndGitPull=$[$(cat ${LogDir}/git_pull.log | grep -n "${DateDelLog} " | head -1 | awk -F ":" '{print $1}') - 3]
+  [ ${LineEndGitPull} -gt 0 ] && perl -i -ne "{print unless 1 .. ${LineEndGitPull} }" ${LogDir}/git_pull.log
+}
+
+## 删除空文件夹
+function Rm_EmptyDir {
+  cd ${LogDir}
+  for dir in $(ls)
+  do
+    if [ -d ${dir} ] && [[ $(ls ${dir}) == "" ]]; then
+      rm -rf ${dir}
+    fi
+  done
 
 
-
-
+## 运行
+function RemoveExbiredLog {
+if [ -n "${RmLogDaysAgo}" ]; then
+  Rm_JsLog
+  Rm_GitPullLog
+  Rm_EmptyDir
+fi
+}
 
 
 
@@ -1127,6 +1174,8 @@ case $# in
       UpdateFuntionall
     elif [[ $1 == help ]]; then
       OutPutHelpCode
+    elif [[ $1 == clear ]]; then
+      RemoveExbiredLog
     else
       Run_Normal $1
     fi
