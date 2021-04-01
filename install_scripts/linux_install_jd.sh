@@ -29,7 +29,9 @@ function Welcome() {
     case  $LINUX_TYPE in
     1 )
        echo  "   debian/ubuntu/armbian/OpenMediaVault，以及其他debian系"
-       sudo apt update && sudo apt install -y git wget curl nodejs npm perl
+       curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+       echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+       sudo apt update && sudo apt install -y git wget curl nodejs npm perl yarn
        if [ ! -x "$(command -v node)" ] || [ ! -x "$(command -v npm)" ] || [ ! -x "$(command -v git)" ] || [ ! -x "$(command -v curl)" ] || [ ! -x "$(command -v wget)" ] || [ ! -x "$(command -v perl)" ]; then
          echo -e "\n依赖未安装完整,请重新运行该脚本且切换良好的网络环境！\n"
          exit 1
@@ -41,7 +43,8 @@ function Welcome() {
        ;;
     2 )
        echo  "   CentOS/RedHat/Fedora等红帽系"
-       sudo yum update && sudo yum install -y git wget curl perl nodejs
+       curl --silent --location https://dl.yarnpkg.com/rpm/yarn.repo | sudo tee /etc/yum.repos.d/yarn.repo
+       sudo yum update && sudo yum install -y git wget curl perl nodejs yarn
        if [ ! -x "$(command -v node)" ] || [ ! -x "$(command -v npm)" ] || [ ! -x "$(command -v git)" ] || [ ! -x "$(command -v curl)" ] || [ ! -x "$(command -v wget)" ] || [ ! -x "$(command -v perl)" ]; then
          echo -e "\n依赖未安装完整,请重新运行该脚本且切换良好的网络环境！\n"
          exit 1
@@ -53,8 +56,8 @@ function Welcome() {
        ;;
     3 )
        echo  "   Termux为主的安卓系"
-       pkg update && pkg install -y git perl nodejs-lts wget curl nano cronie
-       if [ ! -x "$(command -v node)" ] || [ ! -x "$(command -v npm)" ] || [ ! -x "$(command -v git)" ] || [ ! -x "$(command -v curl)" ] || [ ! -x "$(command -v wget)" ] || [ ! -x "$(command -v perl)" ]; then
+       pkg update && pkg install -y git perl yarn wget curl nano cronie
+       if [ ! -x "$(command -v node)" ] || [ ! -x "$(command -v yarn)" ] || [ ! -x "$(command -v git)" ] || [ ! -x "$(command -v curl)" ] || [ ! -x "$(command -v wget)" ] || [ ! -x "$(command -v perl)" ]; then
          echo -e "\n依赖未安装完整,请重新运行该脚本且切换良好的网络环境！\n"
          exit 1
        else
@@ -65,7 +68,7 @@ function Welcome() {
        ;;
     4 )
        echo  "   已安装(继续)"
-       if [ ! -x "$(command -v node)" ] || [ ! -x "$(command -v npm)" ] || [ ! -x "$(command -v git)" ] || [ ! -x "$(command -v curl)" ] || [ ! -x "$(command -v wget)" ] || [ ! -x "$(command -v perl)" ]; then
+       if [ ! -x "$(command -v node)" ] || [ ! -x "$(command -v yarn)" ] || [ ! -x "$(command -v git)" ] || [ ! -x "$(command -v curl)" ] || [ ! -x "$(command -v wget)" ] || [ ! -x "$(command -v perl)" ]; then
          echo -e "\n依赖未安装完整！\n"
          exit 1
        else
@@ -82,7 +85,7 @@ function Welcome() {
 function INSTALLATION_CLONE() {
 echo -e "\n1. 获取源码"
 [ -d ${JdDir} ] && mv ${JdDir} ${JdDir}.bak && echo "检测到已有 ${JdDir} 目录，已备份为 ${JdDir}.bak"
-git clone -b v3 https://gitee.com/highdimen/jd_shell ${JdDir}
+git clone -b A1 https://gitee.com/highdimen/jd_shell ${JdDir}
 
 echo -e "\n2. 检查配置文件"
 [ ! -d ${JdDir}/config ] && mkdir -p ${JdDir}/config
@@ -102,7 +105,7 @@ echo -e "\n3. 执行 git_pull.sh 进行脚本更新以及定时文件更新"
 bash ${JdDir}/git_pull.sh
 
 if [ ! -x "$(command -v pm2)" ]; then
-    echo "正在安装pm2,方便后续集成并发功能"
+    echo "正在安装pm2,集成并发功能"
     npm install pm2@latest -g
 fi
 echo -e "\n注意：原有定时任务已备份在 ${JdDir}/old_crontab"
