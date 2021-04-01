@@ -1250,7 +1250,6 @@ function panelon {
     fi
   fi
   echo -e "记得开启前先认真看Wiki中，功能页里关于控制面板的事项\n"
-  sleep 1
   if [ ! -f "$panelpwd" ]; then
   cp -f ${ShellDir}/sample/auth.json ${ConfigDir}/auth.json
   echo -e "检测到未设置密码，用户名：admin，密码：adminadmin\n"
