@@ -14,6 +14,7 @@ WebshellDir=${ShellDir}/webshell
 ScriptsDir=${ShellDir}/scripts
 Scripts2Dir=${ShellDir}/scripts2
 [ ! -d ${LogDir} ] && mkdir -p ${LogDir}
+[ ! -d ${ScriptsDir} ] && mkdir -p ${ScriptsDir}
 
 ## 文件路径
 FileDiy=${ConfigDir}/diy.sh
@@ -1125,7 +1126,7 @@ function Rm_EmptyDir {
       rm -rf ${dir}
     fi
   done
-
+}
 
 ## 运行
 function RemoveExbiredLog {
@@ -1193,3 +1194,5 @@ case $# in
     Help
     ;;
 esac
+
+
