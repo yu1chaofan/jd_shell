@@ -44,7 +44,7 @@ JdDir_t=${ShellDir_t}/jd
 function REINSTALLATION() {
 echo -e "\n1. 获取源码"
 [ -d ${JdDir_t} ] && mv ${JdDir_t} ${JdDir_t}.bak && echo "检测到已有 ${JdDir_t} 目录，已备份为 ${JdDir_t}.bak"
-git clone -b v3 https://gitee.com/tianxiang-lan/jd_shell ${JdDir_t}
+git clone -b A1 https://gitee.com/tianxiang-lan/jd_shell ${JdDir_t}
 
 echo -e "\n2. 检查配置文件"
 
@@ -63,7 +63,7 @@ crontab ${JdDir_t}/config/crontab.list
 [ ! -s ${JdDir_t}/config/config.sh ] && cp -fv ${JdDir_t}/sample/config.sh.sample ${JdDir_t}/config/config.sh
 
 echo -e "\n3. 执行 git_pull.sh 进行脚本更新以及定时文件更新"
-bash ${JdDir_t}/git_pull.sh
+bash ${JdDir_t}/jd.sh update
 
 echo -e "\n修复完成！！！！"
 }
