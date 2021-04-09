@@ -849,6 +849,9 @@ app.get('/api/scripts/:dir/:file', function (request, response) {
 
 checkConfigFile()
 
-app.listen(5678, () => {
+/**
+ * 任意访问
+ */
+app.listen(5678, '0.0.0.0', () => {
     console.log('应用正在监听 5678 端口!');
 });
